@@ -1,0 +1,53 @@
+{
+  "name": "x402-fetch",
+  "version": "0.1.0",
+  "description": "Drop-in fetch wrapper that auto-pays HTTP 402 endpoints on Abstract chain via the x402 protocol.",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": [
+    "x402",
+    "402",
+    "payment",
+    "fetch",
+    "abstract",
+    "erc-3009",
+    "viem",
+    "http",
+    "paywall",
+    "micropayments"
+  ],
+  "author": "heathen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LoserLab/x402-fetch"
+  },
+  "peerDependencies": {
+    "viem": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "playwright": "^1.58.2",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "viem": "^2.0.0",
+    "vitest": "^3.0.0"
+  }
+}

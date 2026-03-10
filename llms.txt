@@ -1,0 +1,36 @@
+# x402-fetch
+
+> Drop-in fetch wrapper that auto-pays HTTP 402 endpoints on Abstract chain via the x402 protocol. Wraps native fetch(), signs ERC-3009 transferWithAuthorization with a viem wallet client, retries with the X-PAYMENT header.
+
+## Usage
+
+Install: `npm install x402-fetch viem`
+
+```typescript
+import { createX402Fetch } from "x402-fetch";
+const x402fetch = createX402Fetch(walletClient);
+const res = await x402fetch("https://api.example.com/paid-endpoint");
+```
+
+## How it works
+
+1. Call x402fetch() like normal fetch()
+2. Non-402 responses pass through unchanged
+3. On 402, parses payment requirements from response body
+4. Signs ERC-3009 transferWithAuthorization via viem wallet
+5. Retries with signed payment as base64 JSON in X-PAYMENT header
+
+## Programmatic API
+
+```typescript
+import { createX402Fetch } from "x402-fetch";
+
+const x402fetch = createX402Fetch(walletClient, {
+  maxPayment: "0.01",
+  onPayment: (details) => console.log(details),
+});
+```
+
+## Related
+
+- [viem](https://viem.sh): TypeScript interface for Ethereum

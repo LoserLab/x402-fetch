@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>x402-fetch social card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .card {
+    width: 1200px;
+    height: 628px;
+    background: #0A0A0F;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 80px 64px 80px;
+  }
+
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .top-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00D4AA 0%, #9945FF 100%);
+    z-index: 10;
+  }
+
+  .glow-top {
+    position: absolute;
+    top: -180px;
+    left: 30%;
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(0, 212, 170, 0.1) 0%, rgba(153, 69, 255, 0.04) 50%, transparent 70%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .glow-corner {
+    position: absolute;
+    bottom: -80px;
+    right: -60px;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(153, 69, 255, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .http-bg {
+    position: absolute;
+    top: 32px;
+    right: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.05);
+    white-space: pre;
+    pointer-events: none;
+    z-index: 2;
+    user-select: none;
+  }
+
+  .http-bg .status-402 {
+    color: rgba(0, 212, 170, 0.09);
+  }
+
+  .http-bg .status-200 {
+    color: rgba(153, 69, 255, 0.08);
+  }
+
+  .brand {
+    position: absolute;
+    top: 40px;
+    left: 80px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .brand-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FFFFFF;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .brand-line {
+    width: 32px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .brand-type {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: #00D4AA;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    position: absolute;
+    top: 36px;
+    right: 80px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    border-radius: 100px;
+    background: rgba(0, 212, 170, 0.06);
+  }
+
+  .badge-dot {
+    width: 5px;
+    height: 5px;
+    background: #00D4AA;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
+  }
+
+  .badge-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #00D4AA;
+    letter-spacing: 0.08em;
+  }
+
+  .content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .code-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.18);
+    margin-bottom: 4px;
+  }
+
+  .code-hint .kw {
+    color: rgba(153, 69, 255, 0.35);
+  }
+
+  .code-hint .fn {
+    color: rgba(0, 212, 170, 0.35);
+  }
+
+  .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.045em;
+    line-height: 1;
+  }
+
+  .title .dim {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .title .accent {
+    background: linear-gradient(135deg, #00D4AA, #00E8C0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.35);
+    line-height: 1.5;
+  }
+
+  .bottom-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .pills {
+    display: flex;
+    gap: 8px;
+  }
+
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+  }
+
+  .pill-teal {
+    background: rgba(0, 212, 170, 0.08);
+    border: 1px solid rgba(0, 212, 170, 0.25);
+    color: #00D4AA;
+  }
+
+  .pill-purple {
+    background: rgba(153, 69, 255, 0.08);
+    border: 1px solid rgba(153, 69, 255, 0.2);
+    color: rgba(153, 69, 255, 0.8);
+  }
+
+  .repo-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.2);
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="grid"></div>
+  <div class="top-line"></div>
+  <div class="glow-top"></div>
+  <div class="glow-corner"></div>
+
+  <div class="http-bg">GET /api/data HTTP/1.1
+Host: provider.abstract.xyz
+Accept: application/json
+
+
+<span class="status-402">HTTP/1.1 402 Payment Required</span>
+X-Payment-Requirements: {
+  "scheme": "exact",
+  "network": "abstract",
+  "maxAmountRequired": "1000000",
+  "resource": "/api/data",
+  "payTo": "0x1a2b...9f0e"
+}
+
+
+GET /api/data HTTP/1.1
+X-PAYMENT: eyJ0eXBlIjoiZXhhY3Qi...
+
+
+<span class="status-200">HTTP/1.1 200 OK</span>
+Content-Type: application/json</div>
+
+  <div class="brand">
+    <span class="brand-name">heathen</span>
+    <div class="brand-line"></div>
+    <span class="brand-type">Open Source</span>
+  </div>
+
+  <div class="badge">
+    <div class="badge-dot"></div>
+    <span class="badge-text">x402 PAYMENTS</span>
+  </div>
+
+  <div class="content">
+    <div class="code-hint"><span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">x402fetch</span>(url)</div>
+
+    <div>
+      <div class="title">x402<span class="dim">-</span><span class="accent">fetch</span></div>
+      <div class="subtitle">Drop-in fetch wrapper that auto-pays HTTP 402 endpoints on Abstract.</div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="pills">
+        <span class="pill pill-teal">Zero Config</span>
+        <span class="pill pill-teal">ERC-3009</span>
+        <span class="pill pill-purple">Auto-Pay</span>
+        <span class="pill pill-purple">viem</span>
+        <span class="pill pill-purple">MIT License</span>
+      </div>
+      <span class="repo-link">github.com/LoserLab/x402-fetch</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>
