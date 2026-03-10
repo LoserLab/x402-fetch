@@ -119,7 +119,9 @@ const x402fetch = createX402Fetch(wallet, {
 
 | Tool | What it does |
 |------|-------------|
+| [abstract-audit](https://github.com/LoserLab/abstract-audit) | Catch EVM incompatibilities in your Solidity contracts |
 | **x402-fetch** (this package) | Auto-pay HTTP 402 endpoints on Abstract |
+| [abstract-gas](https://github.com/LoserLab/abstract-gas) | Estimate gas costs on Abstract vs Ethereum |
 
 ## Author
 
